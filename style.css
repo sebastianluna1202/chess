@@ -1,0 +1,157 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: rgb(28, 29, 31);
+}
+#chess-board {
+    transition-duration: .9s;
+    transition-timing-function:ease-out ;
+    transition-delay: 300ms;
+    margin: 0 auto;
+    background-color: #eeeed2;
+    width: 100%;
+    max-width: 100vh;
+    aspect-ratio: 1;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+}
+#chess-board div {
+    width: 100%;
+    height: 100%;
+}
+#a1, #a3, #a5, #a7,
+#b2, #b4, #b6, #b8,
+#c1, #c3, #c5, #c7,
+#d2, #d4, #d6, #d8,
+#e1, #e3, #e5, #e7,
+#f2, #f4, #f6, #f8,
+#g1, #g3, #g5, #g7,
+#h2, #h4, #h6, #h8 {
+    background-color: #769656;
+    
+}
+.moves {
+    background-image: url('./assets/move.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 37%;
+}
+
+.blacksQueensBishop, .blacksKingsBishop {
+    background-image: url('./assets/black-bishop.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.whitesQueensBishop, .whitesKingsBishop {
+    background-image: url('./assets/white-bishop.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.whitesQueensRook, .whitesKingsRook {
+    background-image: url('./assets/white-rook.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.blacksQueensRook, .blacksKingsRook {
+    background-image: url('./assets/black-rook.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.whitesKingsKnight, .whitesQueensKnight {
+    background-image: url('./assets/white-knight.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.blacksKingsKnight, .blacksQueensKnight {
+    background-image: url('./assets/black-knight.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.blacksQueen {
+    background-image: url('./assets/black-queen.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.whitesQueen {
+    background-image: url('./assets/white-queen.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%; 
+}
+.whitesAPawn, .whitesBPawn, .whitesCPawn, .whitesDPawn, .whitesEPawn, .whitesFPawn, .whitesGPawn, .whitesHPawn {
+    background-image: url('./assets/white-pawn.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.blacksAPawn, .blacksBPawn, .blacksCPawn, .blacksDPawn, .blacksEPawn, .blacksFPawn, .blacksGPawn, .blacksHPawn {
+    background-image: url('./assets/black-pawn.png') ;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.whitesKing {
+    background-image: url('./assets/white-king.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.blacksKing {
+    background-image: url('./assets/black-king.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.active {
+    background-color: rgb(211, 208, 35) !important;
+}
+
+.capturePiece {
+    background-color: rgb(241, 164, 64) !important;
+}
+.castle {
+    background-image: url('./assets/move.png') !important ;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: 37% !important;
+}
+
+.reverse {
+    transform: rotate(180deg);
+    transition-duration: .7s;
+    transition-timing-function: ease-out;
+}
+
+.reverse > .blacksQueensBishop, .reverse > .blacksKingsBishop,
+.reverse > .whitesQueensBishop, .reverse > .whitesKingsBishop,
+.reverse > .whitesQueensRook, .reverse > .whitesKingsRook,
+.reverse > .blacksQueensRook, .reverse > .blacksKingsRook,
+.reverse > .whitesKingsKnight, .reverse > .whitesQueensKnight,
+.reverse > .blacksKingsKnight, .reverse > .blacksQueensKnight,
+.reverse > .blacksQueen, .reverse > .whitesQueen,
+.reverse > .whitesKing, .reverse > .blacksKing,
+.reverse > .whitesAPawn, .reverse > .whitesBPawn,
+.reverse > .whitesCPawn, .reverse > .whitesDPawn,
+.reverse > .whitesEPawn, .reverse > .whitesFPawn,
+.reverse > .whitesGPawn, .reverse > .whitesHPawn,
+.reverse > .blacksAPawn, .reverse > .blacksBPawn,
+.reverse > .blacksCPawn, .reverse > .blacksDPawn,
+.reverse > .blacksEPawn, .reverse > .blacksFPawn,
+.reverse > .blacksGPawn, .reverse > .blacksHPawn
+{
+    transform: rotate(180deg);
+}
+
