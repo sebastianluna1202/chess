@@ -7,9 +7,6 @@ body {
     background-color: rgb(28, 29, 31);
 }
 #chess-board {
-    transition-duration: .9s;
-    transition-timing-function:ease-out ;
-    transition-delay: 300ms;
     margin: 0 auto;
     background-color: #eeeed2;
     width: 100%;
@@ -34,6 +31,29 @@ body {
 #h2, #h4, #h6, #h8 {
     background-color: #769656;
     
+}
+#inactive-board {
+    width: 100%;
+    max-width: 100vh;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: #0000003b;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#play-button {
+    width: 260px;
+    
+}
+#play-button:hover {
+    filter: brightness(60%);
 }
 .moves {
     background-image: url('./assets/move.png');
@@ -131,7 +151,6 @@ body {
 
 .reverse {
     transform: rotate(180deg);
-    transition-duration: .7s;
     transition-timing-function: ease-out;
 }
 

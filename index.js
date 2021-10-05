@@ -133,8 +133,6 @@ const active = (event) => {
     }
 }
 
-board.addEventListener('click', active)
-
 const getKeyByValue = (position) => {
     let column = `${letter[`${position[0] - 1}`]}`
     let row = `${position[1]}`
@@ -153,22 +151,24 @@ class Game {
             break
             case 'black':
                 this.turn = 'white'
-            break
-        }
-        switch (this.turn) {
-            case 'white':
-                setTimeout(() => {board.classList.remove('reverse')}, 500)
+                break
+            }
+            switch (this.turn) {
+                case 'white':
+                    setTimeout(() => {board.classList.remove('reverse')}, 500)
             break
             case 'black':
                 setTimeout(() => {board.classList.add('reverse')}, 500)  
-            break
+                break
+            }
         }
+    startGame() {
+        board.addEventListener('click', active)
     }
-    endGamer() {
+    endGame() {
         board.removeEventListener('click', active)
     }
 }
-
 class Piece {
     constructor(square, namePiece, color) {
         this.namePiece = namePiece
@@ -886,7 +886,6 @@ class Knight extends Piece {
                 this.showSquare.classList.add('moves') 
             }
         }
-
     }    
 }
 class Pawn extends Piece {
@@ -1244,7 +1243,9 @@ class King extends Piece {
             this.rightSquare1.classList.contains('white') != true &&
             this.rightSquare2.classList.contains('white') != true &&
             this.rightSquare1.classList.contains('black') != true &&
-            this.rightSquare2.classList.contains('black') != true
+            this.rightSquare2.classList.contains('black') != true &&
+            isAtacked(squares[this.rightSquare1.id], this.colorPiece) != true &&
+            isAtacked(squares[this.rightSquare2.id], this.colorPiece) != true
             ) {
                 this.rightSquare2.classList.add('castle')
             }
@@ -1256,7 +1257,10 @@ class King extends Piece {
             this.leftSquare3.classList.contains('white') != true &&
             this.leftSquare1.classList.contains('black') != true &&
             this.leftSquare2.classList.contains('black') != true &&
-            this.leftSquare3.classList.contains('black') != true 
+            this.leftSquare3.classList.contains('black') != true &&
+            isAtacked(squares[this.leftSquare1.id], this.colorPiece) != true &&
+            isAtacked(squares[this.leftSquare2.id], this.colorPiece) != true &&
+            isAtacked(squares[this.leftSquare3.id], this.colorPiece) != true
             ) {
                 this.leftSquare2.classList.add('castle')
             }
@@ -1284,7 +1288,6 @@ class King extends Piece {
                 this.leftSquare2.classList.add('castle')
             }
         }
-        
         this.showColumn = this.position[0]
         this.showRow = this.position[1]
         this.showRow += 1
@@ -1292,22 +1295,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1319,22 +1324,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1345,22 +1352,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1372,22 +1381,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1398,22 +1409,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1425,22 +1438,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1451,22 +1466,24 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
@@ -1478,26 +1495,857 @@ class King extends Piece {
             this.valueSquare = [this.showColumn, this.showRow]
             this.keySquare = getKeyByValue(this.valueSquare)
             this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
+            if ( isAtacked(this.valueSquare, this.colorPiece) != true) {
+                if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
+                    if (newGame.turn === 'white') {
+                        if (this.showSquare.classList.contains('black')) {
+                            this.showSquare.classList.add('capturePiece')
+                        } 
+                    } else if (newGame.turn === 'black') {
+                        if (this.showSquare.classList.contains('white')) {
+                            this.showSquare.classList.add('capturePiece')
+                        }
                     }
-                }
-            } else {
-                if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
-                }
-                if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
-                    this.showSquare.classList.add('moves') 
+                } else {
+                    if (newGame.turn === 'white' && this.showSquare.classList.contains('blacksKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
+                    if (newGame.turn === 'black' && this.showSquare.classList.contains('whitesKingsRoundSquare') != true) {
+                        this.showSquare.classList.add('moves') 
+                    }
                 }
             }
         }
     }
+}
+
+const isAtacked = (square, colorPiece) => {
+    let turn = colorPiece
+    let position = square
+    let showColumn = position[0]
+    let showRow = position[1]
+    let isAtacked = false
+    // calculate if a white pieces is attacked
+    if (turn === 'white') {
+        //calculate if a white piece is attacked by a pawn
+        if (showColumn >= 2 && showRow <= 7) {
+            showColumn -= 1
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksAPawn') ||
+                        showSquare.classList.contains('blacksBPawn') || 
+                        showSquare.classList.contains('blacksCPawn') || 
+                        showSquare.classList.contains('blacksDPawn') || 
+                        showSquare.classList.contains('blacksEPawn') || 
+                        showSquare.classList.contains('blacksFPawn') || 
+                        showSquare.classList.contains('blacksGPawn') || 
+                        showSquare.classList.contains('blacksHPawn') 
+                    ) {
+                        isAtacked = true
+                    }
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        if (showColumn <= 7 && showRow <= 7) {
+            showColumn += 1
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksAPawn') ||
+                        showSquare.classList.contains('blacksBPawn') || 
+                        showSquare.classList.contains('blacksCPawn') || 
+                        showSquare.classList.contains('blacksDPawn') || 
+                        showSquare.classList.contains('blacksEPawn') || 
+                        showSquare.classList.contains('blacksFPawn') || 
+                        showSquare.classList.contains('blacksGPawn') || 
+                        showSquare.classList.contains('blacksHPawn') 
+                    ) {
+                        isAtacked = true
+                    }
+                }
+            }
+        }
+        //calculate if a white piece is attacked by a bishop or a queen
+        showColumn = position[0]
+        showRow = position[1]
+         while (true) {
+            if (showColumn === 1 || showRow === 1 ){
+                break
+            }
+            showColumn -= 1
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsBishop') || 
+                        showSquare.classList.contains('blacksQueensBishop') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 1 || showRow === 8) {
+                break
+            }
+            showColumn -= 1
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsBishop') || 
+                        showSquare.classList.contains('blacksQueensBishop') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 8 || showRow === 1) {
+                break
+            }
+            showColumn += 1
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsBishop') || 
+                        showSquare.classList.contains('blacksQueensBishop') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 8 || showRow === 8) {
+                break
+            }
+            showColumn += 1
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsBishop') || 
+                        showSquare.classList.contains('blacksQueensBishop') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        //calculate if a white piece is attacked by a rook or a queen
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 8){
+                break
+            }
+            showColumn += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsRook') || 
+                        showSquare.classList.contains('blacksQueensRook') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 1) {
+                break
+            }
+            showColumn -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsRook') || 
+                        showSquare.classList.contains('blacksQueensRook') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showRow === 1) {
+                break
+            }
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsRook') || 
+                        showSquare.classList.contains('blacksQueensRook') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showRow === 8) {
+                break
+            }
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsRook') || 
+                        showSquare.classList.contains('blacksQueensRook') || 
+                        showSquare.classList.contains('blacksQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('white')) {
+                    break
+                }
+            }
+        }
+        //calculate if a white piece is attacked by a knight
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 2
+        showColumn += 1
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 2
+        showColumn -= 1
+        if (showRow <= 8 && showColumn >= 1) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 2
+        showColumn += 1
+        if (showRow >= 1 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                }  
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 2
+        showColumn -= 1
+        if (showRow >= 1 && showColumn >= 1) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 1
+        showColumn += 2
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 1
+        showColumn += 2
+        if (showRow >= 1 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 1
+        showColumn -= 2
+        if (showRow <= 8 && showColumn >= 1) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 1
+        showColumn -= 2
+        if (showRow >= 1 && showColumn >= 1) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('black')) {
+                    if (
+                        showSquare.classList.contains('blacksKingsKnight') ||
+                        showSquare.classList.contains('blacksQueensKnight')
+                    ) {
+                        isAtacked = true
+                    } 
+                }  
+            }
+        }
+    } else {
+        //calculate if a black piece is attacked by a pawn
+        if (showColumn >= 2 && showRow >= 2) {
+            showColumn -= 1
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesAPawn') ||
+                        showSquare.classList.contains('whitesBPawn') || 
+                        showSquare.classList.contains('whitesCPawn') || 
+                        showSquare.classList.contains('whitesDPawn') || 
+                        showSquare.classList.contains('whitesEPawn') || 
+                        showSquare.classList.contains('whitesFPawn') || 
+                        showSquare.classList.contains('whitesGPawn') || 
+                        showSquare.classList.contains('whitesHPawn') 
+                    ) {
+                        isAtacked = true
+                    }
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        if (showColumn <= 7 && showRow >= 2) {
+            showColumn += 1
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesAPawn') ||
+                        showSquare.classList.contains('whitesBPawn') || 
+                        showSquare.classList.contains('whitesCPawn') || 
+                        showSquare.classList.contains('whitesDPawn') || 
+                        showSquare.classList.contains('whitesEPawn') || 
+                        showSquare.classList.contains('whitesFPawn') || 
+                        showSquare.classList.contains('whitesGPawn') || 
+                        showSquare.classList.contains('whitesHPawn') 
+                    ) {
+                        isAtacked = true
+                    }
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        //calculate if a black piece is attacked by a bishop or a queen
+         while (true) {
+            if (showColumn === 1 || showRow === 1 ){
+                break
+            }
+            showColumn -= 1
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsBishop') || 
+                        showSquare.classList.contains('whitesQueensBishop') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 1 || showRow === 8) {
+                break
+            }
+            showColumn -= 1
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsBishop') || 
+                        showSquare.classList.contains('whitesQueensBishop') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 8 || showRow === 1) {
+                break
+            }
+            showColumn += 1
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsBishop') || 
+                        showSquare.classList.contains('whitesQueensBishop') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 8 || showRow === 8) {
+                break
+            }
+            showColumn += 1
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsBishop') || 
+                        showSquare.classList.contains('whitesQueensBishop') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        //calculate if a black piece is attacked by a rook or a queen
+         while (true) {
+            if (showColumn === 8){
+                break
+            }
+            showColumn += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsRook') || 
+                        showSquare.classList.contains('whitesQueensRook') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showColumn === 1) {
+                break
+            }
+            showColumn -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsRook') || 
+                        showSquare.classList.contains('whitesQueensRook') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showRow === 1) {
+                break
+            }
+            showRow -= 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsRook') || 
+                        showSquare.classList.contains('whitesQueensRook') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        while (true) {
+            if (showRow === 8) {
+                break
+            }
+            showRow += 1
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (showSquare.classList.contains('white')) {
+                    if (
+                        showSquare.classList.contains('whitesKingsRook') || 
+                        showSquare.classList.contains('whitesQueensRook') || 
+                        showSquare.classList.contains('whitesQueen')
+                    ) {
+                        isAtacked = true
+                    } else {
+                        break
+                    }
+                } else if (showSquare.classList.contains('black')) {
+                    break
+                }
+            }
+        }
+        //calculate if a white piece is attacked by a knight
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 2
+        showColumn += 1
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 2
+        showColumn -= 1
+        if (showRow <= 8 && showColumn >= 1) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 2
+        showColumn += 1
+        if (showRow >= 1 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 2
+        showColumn -= 1
+        if (showRow >= 1 && showColumn >= 1) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 1
+        showColumn += 2
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                }
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 1
+        showColumn += 2
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow += 1
+        showColumn -= 2
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                } 
+            }
+        }
+        showColumn = position[0]
+        showRow = position[1]
+        showRow -= 1
+        showColumn -= 2
+        if (showRow <= 8 && showColumn <= 8) {
+            let valueSquare = [showColumn, showRow]
+            let keySquare = getKeyByValue(valueSquare)
+            let showSquare = document.getElementById(keySquare)
+            if (showSquare.classList.contains('white') || showSquare.classList.contains('black')) {
+                if (
+                    showSquare.classList.contains('whitesKingsKnight') ||
+                    showSquare.classList.contains('whitesQueensKnight')
+                ) {
+                    isAtacked = true
+                }
+            }
+        }
+    }
+    return isAtacked
 }
 
 let newGame = new Game()
@@ -1535,40 +2383,54 @@ let blacksHPawn = new Pawn('h7', 'blacksHPawn', 'black')
 let whitesKing = new King('e1', 'whitesKing', 'white')
 let blacksKing = new King('e8', 'blacksKing', 'black')
 
+const printPiece = (piece) => {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(piece) , 40)
+    })
+}
 
-blacksQueensBishop.create()
-blacksKingsBishop.create()
-whitesQueensBishop.create()
-whitesKingsBishop.create()
-blacksQueensRook.create()
-blacksKingsRook.create()
-whitesQueensRook.create()
-whitesKingsRook.create()
-whitesQueen.create()
-blacksQueen.create()
-whitesKingsKnight.create()
-whitesQueensKnight.create()
-blacksKingsKnight.create()
-blacksQueensKnight.create()
-whitesAPawn.create()
-whitesBPawn.create()
-whitesCPawn.create()
-whitesDPawn.create()
-whitesEPawn.create()
-whitesFPawn.create()
-whitesGPawn.create()
-whitesHPawn.create()
-blacksAPawn.create()
-blacksBPawn.create()
-blacksCPawn.create()
-blacksDPawn.create()
-blacksEPawn.create()
-blacksFPawn.create()
-blacksGPawn.create()
-blacksHPawn.create()
-whitesKing.create()
-blacksKing.create()
+const printBoard = async () => {
+    await printPiece(blacksQueensRook).then(piece => piece.create())
+    await printPiece(blacksQueensKnight).then(piece => piece.create())
+    await printPiece(blacksQueensBishop).then(piece => piece.create())
+    await printPiece(blacksQueen).then(piece => piece.create())
+    await printPiece(blacksKing).then(piece => piece.create())
+    await printPiece(blacksKingsBishop).then(piece => piece.create())
+    await printPiece(blacksKingsKnight).then(piece => piece.create())
+    await printPiece(blacksKingsRook).then(piece => piece.create())
+    await printPiece(blacksAPawn).then(piece => piece.create())
+    await printPiece(blacksBPawn).then(piece => piece.create())
+    await printPiece(blacksCPawn).then(piece => piece.create())
+    await printPiece(blacksDPawn).then(piece => piece.create())
+    await printPiece(blacksEPawn).then(piece => piece.create())
+    await printPiece(blacksFPawn).then(piece => piece.create())
+    await printPiece(blacksGPawn).then(piece => piece.create())
+    await printPiece(blacksHPawn).then(piece => piece.create())
+    await printPiece(whitesAPawn).then(piece => piece.create())
+    await printPiece(whitesBPawn).then(piece => piece.create())
+    await printPiece(whitesCPawn).then(piece => piece.create())
+    await printPiece(whitesDPawn).then(piece => piece.create())
+    await printPiece(whitesEPawn).then(piece => piece.create())
+    await printPiece(whitesFPawn).then(piece => piece.create())
+    await printPiece(whitesGPawn).then(piece => piece.create())
+    await printPiece(whitesHPawn).then(piece => piece.create())
+    await printPiece(whitesQueensRook).then(piece => piece.create())
+    await printPiece(whitesQueensKnight).then(piece => piece.create())
+    await printPiece(whitesQueensBishop).then(piece => piece.create())
+    await printPiece(whitesQueen).then(piece => piece.create())
+    await printPiece(whitesKing).then(piece => piece.create())
+    await printPiece(whitesKingsBishop).then(piece => piece.create())
+    await printPiece(whitesKingsKnight).then(piece => piece.create())
+    await printPiece(whitesKingsRook).then(piece => piece.create())
+}
 
+const playButton = document.querySelector('#play-button')
+const inactiveBoard = document.querySelector('#inactive-board')
+playButton.addEventListener('click', () => {
+    setTimeout( () => printBoard(), 500)
+    inactiveBoard.remove()
+    newGame.startGame()
+})
 
 const pieces = {
     'blacksQueensBishop' : blacksQueensBishop,
