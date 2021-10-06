@@ -96,8 +96,6 @@ const active = (event) => {
         let activeSquare = document.querySelector('.active')
         piecesClassList.forEach( piece => {
             if (activeSquare.classList.contains(piece)) {  
-                console.log(pieces[piece])
-                console.log(event.target.id)
                 pieces[piece].delete()
                 pieces[piece].move(event.target.id)
                 pieces[piece].create()
@@ -896,140 +894,87 @@ class Pawn extends Piece {
         this.showColumn = this.position[0]
         this.showRow = this.position[1]
         if (this.square.classList.contains('white')){
+            this.showRow += 1
+            this.valueSquare = [this.showColumn, this.showRow]
+            this.keySquare = getKeyByValue(this.valueSquare)
+            this.showSquare = document.getElementById(this.keySquare)
+            if (this.showSquare.classList.contains('black') != true && this.showSquare.classList.contains('white') != true ) {
+                this.showSquare.classList.add('moves')
+            } 
             if (this.moves === 0) {
                 this.showRow += 1
                 this.valueSquare = [this.showColumn, this.showRow]
                 this.keySquare = getKeyByValue(this.valueSquare)
                 this.showSquare = document.getElementById(this.keySquare)
-                if (this.showSquare.classList.contains('black') || this.showSquare.classList.contains('white')) {
-    
-                } else {
+                if (this.showSquare.classList.contains('black') != true && this.showSquare.classList.contains('white') != true) {
                     this.showSquare.classList.add('moves')
-                    this.showRow += 1
-                    this.valueSquare = [this.showColumn, this.showRow]
-                    this.keySquare = getKeyByValue(this.valueSquare)
-                    this.showSquare = document.getElementById(this.keySquare)
-                    if (this.showSquare.classList.contains('black') || this.showSquare.classList.contains('white')) {
-        
-                    } else {
-                        this.showSquare.classList.add('moves')
-                    }
-                }
-            } else {
-                this.showRow += 1
-                this.valueSquare = [this.showColumn, this.showRow]
-                this.keySquare = getKeyByValue(this.valueSquare)
-                this.showSquare = document.getElementById(this.keySquare)
-                if (this.showSquare.classList.contains('black') || this.showSquare.classList.contains('white')) {
-        
-                } else {
-                    this.showSquare.classList.add('moves')
-                }
-            }
+                } 
+            } 
             this.showColumn = this.position[0]
             this.showRow = this.position[1]
             this.showColumn += 1
             this.showRow += 1
-            this.valueSquare = [this.showColumn, this.showRow]
-            this.keySquare = getKeyByValue(this.valueSquare)
-            this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
-                    }
+            if (this.showColumn <= 8) {
+                this.valueSquare = [this.showColumn, this.showRow]
+                this.keySquare = getKeyByValue(this.valueSquare)
+                this.showSquare = document.getElementById(this.keySquare)
+                if (this.showSquare.classList.contains('black')) {
+                    this.showSquare.classList.add('capturePiece')
                 }
-            } 
+            }
             this.showColumn = this.position[0]
             this.showRow = this.position[1]
             this.showColumn -= 1
             this.showRow += 1
-            this.valueSquare = [this.showColumn, this.showRow]
-            this.keySquare = getKeyByValue(this.valueSquare)
-            this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
-                    }
+            if (this.showColumn >= 1) {
+                this.valueSquare = [this.showColumn, this.showRow]
+                this.keySquare = getKeyByValue(this.valueSquare)
+                this.showSquare = document.getElementById(this.keySquare)
+                if (this.showSquare.classList.contains('black')) {
+                    this.showSquare.classList.add('capturePiece')
                 }
             }
         } else {
+            this.showRow -= 1
+            this.valueSquare = [this.showColumn, this.showRow]
+            this.keySquare = getKeyByValue(this.valueSquare)
+            this.showSquare = document.getElementById(this.keySquare)
+            if (this.showSquare.classList.contains('black') != true && this.showSquare.classList.contains('white') != true) {
+                this.showSquare.classList.add('moves')
+            }
             if (this.moves === 0) {
                 this.showRow -= 1
                 this.valueSquare = [this.showColumn, this.showRow]
                 this.keySquare = getKeyByValue(this.valueSquare)
                 this.showSquare = document.getElementById(this.keySquare)
-                if (this.showSquare.classList.contains('black') || this.showSquare.classList.contains('white')) {
-    
-                } else {
-                    this.showSquare.classList.add('moves')
-                    this.showRow -= 1
-                    this.valueSquare = [this.showColumn, this.showRow]
-                    this.keySquare = getKeyByValue(this.valueSquare)
-                    this.showSquare = document.getElementById(this.keySquare)
-                    if (this.showSquare.classList.contains('black') || this.showSquare.classList.contains('white')) {
-        
-                    } else {
-                        this.showSquare.classList.add('moves')
-                    }
-                }
-            } else {
-                this.showRow -= 1
-                this.valueSquare = [this.showColumn, this.showRow]
-                this.keySquare = getKeyByValue(this.valueSquare)
-                this.showSquare = document.getElementById(this.keySquare)
-                if (this.showSquare.classList.contains('black') || this.showSquare.classList.contains('white')) {
-        
-                } else {
+                if (this.showSquare.classList.contains('black') != true && this.showSquare.classList.contains('white') != true) {
                     this.showSquare.classList.add('moves')
                 }
-            } 
+            }
             this.showColumn = this.position[0]
             this.showRow = this.position[1]
             this.showColumn -= 1
             this.showRow -= 1
-            this.valueSquare = [this.showColumn, this.showRow]
-            this.keySquare = getKeyByValue(this.valueSquare)
-            this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
-                    }
-                }
-            } 
+            if (this.showColumn >= 1) {
+                this.valueSquare = [this.showColumn, this.showRow]
+                this.keySquare = getKeyByValue(this.valueSquare)
+                this.showSquare = document.getElementById(this.keySquare)
+                if (this.showSquare.classList.contains('white')) {
+                    this.showSquare.classList.add('capturePiece')
+                } 
+            }
             this.showColumn = this.position[0]
             this.showRow = this.position[1]
             this.showColumn += 1
             this.showRow -= 1
-            this.valueSquare = [this.showColumn, this.showRow]
-            this.keySquare = getKeyByValue(this.valueSquare)
-            this.showSquare = document.getElementById(this.keySquare)
-            if (this.showSquare.classList.contains('white') || this.showSquare.classList.contains('black')) {
-                if (newGame.turn === 'white') {
-                    if (this.showSquare.classList.contains('black')) {
-                        this.showSquare.classList.add('capturePiece')
-                    } 
-                } else if (newGame.turn === 'black') {
-                    if (this.showSquare.classList.contains('white')) {
-                        this.showSquare.classList.add('capturePiece')
-                    }
+            if (this.showColumn <= 8) {
+                this.valueSquare = [this.showColumn, this.showRow]
+                this.keySquare = getKeyByValue(this.valueSquare)
+                this.showSquare = document.getElementById(this.keySquare)
+                if (this.showSquare.classList.contains('white')) { 
+                    this.showSquare.classList.add('capturePiece')
                 }
             }
-
         }
     } 
 }
@@ -1259,8 +1204,7 @@ class King extends Piece {
             this.leftSquare2.classList.contains('black') != true &&
             this.leftSquare3.classList.contains('black') != true &&
             isAtacked(squares[this.leftSquare1.id], this.colorPiece) != true &&
-            isAtacked(squares[this.leftSquare2.id], this.colorPiece) != true &&
-            isAtacked(squares[this.leftSquare3.id], this.colorPiece) != true
+            isAtacked(squares[this.leftSquare2.id], this.colorPiece) != true 
             ) {
                 this.leftSquare2.classList.add('castle')
             }
@@ -1271,7 +1215,9 @@ class King extends Piece {
             this.rightSquare1.classList.contains('white') != true &&
             this.rightSquare2.classList.contains('white') != true &&
             this.rightSquare1.classList.contains('black') != true &&
-            this.rightSquare2.classList.contains('black') != true
+            this.rightSquare2.classList.contains('black') != true &&
+            isAtacked(squares[this.rightSquare1.id], this.colorPiece) != true &&
+            isAtacked(squares[this.rightSquare2.id], this.colorPiece) != true
             ) {
                 this.rightSquare2.classList.add('castle')
             }
@@ -1283,7 +1229,9 @@ class King extends Piece {
             this.leftSquare3.classList.contains('white') != true &&
             this.leftSquare1.classList.contains('black') != true &&
             this.leftSquare2.classList.contains('black') != true &&
-            this.leftSquare3.classList.contains('black') != true 
+            this.leftSquare3.classList.contains('black') != true &&
+            isAtacked(squares[this.leftSquare1.id], this.colorPiece) != true &&
+            isAtacked(squares[this.leftSquare2.id], this.colorPiece) != true
             ) {
                 this.leftSquare2.classList.add('castle')
             }
@@ -2314,7 +2262,7 @@ const isAtacked = (square, colorPiece) => {
         showRow = position[1]
         showRow += 1
         showColumn -= 2
-        if (showRow <= 8 && showColumn <= 8) {
+        if (showRow <= 8 && showColumn >= 1) {
             let valueSquare = [showColumn, showRow]
             let keySquare = getKeyByValue(valueSquare)
             let showSquare = document.getElementById(keySquare)
@@ -2331,7 +2279,7 @@ const isAtacked = (square, colorPiece) => {
         showRow = position[1]
         showRow -= 1
         showColumn -= 2
-        if (showRow <= 8 && showColumn <= 8) {
+        if (showRow >= 1 && showColumn >= 1) {
             let valueSquare = [showColumn, showRow]
             let keySquare = getKeyByValue(valueSquare)
             let showSquare = document.getElementById(keySquare)
